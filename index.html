@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salin</title>
+<!-- ⚠️ You don't need to edit this file. Edit content.js instead. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16213a; --muted:#5b6478; --bg:#fbf8f2; --card:#ffffff; --line:#e7e1d6;
+  --blue:#1f3a8a; --sun:#f4b400; --sun-soft:#fff4d1;
+  --red:#c2362f; --red-soft:#fde8e6; --green:#1d7a4c; --green-soft:#e3f4ea;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;font-size:16px}
+a{color:var(--blue)}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800}
+h2{font-size:clamp(1.5rem,4.5vw,2rem)}
+h3{font-size:1.15rem}
+p{margin:0 0 1em}
+.wrap{max-width:920px;margin:0 auto;padding:0 18px}
+
+header{position:sticky;top:0;z-index:10;background:rgba(251,248,242,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:14px;height:60px}
+.brand{font-family:Fraunces,serif;font-weight:800;font-size:1.35rem;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:8px}
+.brand .dot{width:12px;height:12px;border-radius:50%;background:var(--sun);box-shadow:14px 0 0 var(--blue),28px 0 0 var(--red);margin-right:30px}
+.links{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.links::-webkit-scrollbar{display:none}
+.links a{text-decoration:none;color:var(--muted);font-weight:600;font-size:.92rem;padding:8px 11px;border-radius:999px;white-space:nowrap}
+.links a.on{background:var(--ink);color:#fff}
+@media (max-width:640px){.nav{flex-wrap:wrap;height:auto;padding:10px 0 8px}.links{margin-left:0;width:100%}}
+
+main{padding:28px 0 60px}
+.view{display:none}
+.view.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.hero{padding:22px 0 10px}
+.eyebrow{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:#e8edfb;padding:5px 10px;border-radius:999px;margin-bottom:14px}
+.lede{font-size:1.12rem;color:var(--muted);max-width:640px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 8px}
+.btn{display:inline-block;border:0;cursor:pointer;font:inherit;font-weight:600;text-decoration:none;padding:12px 18px;border-radius:12px;background:var(--ink);color:#fff}
+.btn.alt{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+.btn.sm{padding:8px 13px;font-size:.9rem;border-radius:10px}
+.sechead{margin:36px 0 14px}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:30px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.step b{display:block;font-family:Fraunces,serif;font-size:1.6rem;color:var(--sun);line-height:1}
+.step h3{margin-top:8px}
+.step p{color:var(--muted);font-size:.95rem;margin:0}
+
+/* topic cards */
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.topic{display:block;text-decoration:none;color:inherit;border-radius:var(--r);padding:18px;background:var(--tbg);border:1px solid transparent;transition:transform .15s}
+.topic:hover{transform:translateY(-2px)}
+.topic .tw{font-family:Fraunces,serif;font-weight:800;font-size:1.5rem;color:var(--tc);line-height:1.1;margin-bottom:6px}
+.topic p{margin:0;font-size:.93rem;color:var(--ink)}
+.topic small{display:block;margin-top:10px;font-weight:600;color:var(--tc);font-size:.85rem}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 20px}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-size:.88rem;font-weight:600;padding:7px 13px;border-radius:999px;cursor:pointer}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:999px;margin:0 6px 4px 0;background:var(--tbg);color:var(--tc)}
+.tag.src{background:#efece6;color:var(--muted)}
+.tag.bad{background:var(--red-soft);color:var(--red)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .15s, box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(22,33,58,.08)}
+.thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--blue),#2b4fb8);display:flex;align-items:center;justify-content:center;color:#fff;position:relative}
+.thumb.yt{background:linear-gradient(135deg,#7a1f1b,var(--red))}
+.play{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
+.play:after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+.thumb small{position:absolute;bottom:8px;right:10px;font-size:.72rem;background:rgba(0,0,0,.35);padding:2px 7px;border-radius:6px}
+.thumb .stype{position:absolute;top:8px;left:10px;font-size:.72rem;font-weight:700;background:rgba(0,0,0,.3);padding:2px 8px;border-radius:6px}
+.card .body{padding:14px 16px 16px}
+.card .line{font-weight:600;margin:6px 0 4px}
+.card .tr{color:var(--muted);font-size:.92rem;margin:0}
+
+.back{display:inline-block;margin-bottom:16px;font-weight:600;text-decoration:none}
+.player{border-radius:var(--r);overflow:hidden}
+.player-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 0 4px;font-size:.9rem;color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-top:14px}
+.lbl{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.tl{font-size:1.25rem;font-weight:600;line-height:1.6}
+.hl{background:var(--tbg);color:var(--tc);padding:1px 5px;border-radius:5px;font-weight:700}
+.hl-bad{background:var(--red-soft);color:var(--red);padding:1px 5px;border-radius:5px;font-weight:700;text-decoration:underline wavy}
+.en{font-size:1.1rem}
+.lit{color:var(--muted);font-size:.95rem;margin-top:6px}
+.spot{border-left:5px solid var(--tc)}
+.spot.badb{border-left-color:var(--red)}
+.verdict{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.88rem;padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.verdict.ok{background:var(--green-soft);color:var(--green)}
+.verdict.no{background:var(--red-soft);color:var(--red)}
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.vw{background:var(--bg);border-radius:10px;padding:10px 12px}
+.vw b{display:block}
+.vw span{color:var(--muted);font-size:.9rem}
+.opts{display:flex;gap:10px;margin:12px 0 8px;flex-wrap:wrap}
+.opt{flex:1 1 120px;max-width:220px;border:2px solid var(--line);background:#fff;font:inherit;font-weight:700;font-size:1.02rem;padding:12px;border-radius:12px;cursor:pointer;color:var(--ink)}
+.opt.right{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+.fb{font-size:.95rem;min-height:1.4em}
+.pager{display:flex;justify-content:space-between;margin-top:22px;gap:10px}
+.qs{font-size:1.2rem;font-weight:600;margin:6px 0 4px}
+.blank{display:inline-block;min-width:64px;border-bottom:3px solid var(--ink);text-align:center}
+
+/* lesson */
+.lhead{border-radius:var(--r);padding:22px;background:var(--tbg);margin-bottom:18px}
+.lhead h1{color:var(--tc);font-size:clamp(1.8rem,5vw,2.6rem);margin-bottom:.25em}
+.lhead p{margin:0;font-size:1.05rem}
+.rule{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:12px}
+.rule .num{font-family:Fraunces,serif;font-weight:800;color:var(--muted);font-size:.95rem}
+.ex{background:var(--bg);border-radius:10px;padding:10px 14px;margin-top:10px}
+.ex .t{font-weight:600}
+.ex .e{color:var(--muted);font-size:.93rem}
+table.tbl{width:100%;border-collapse:collapse;font-size:.95rem;margin-top:8px}
+.tbl th,.tbl td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+.tbl th{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.trick{background:var(--ink);color:#fff;border-radius:var(--r);padding:20px 22px;margin:22px 0}
+.trick h3{color:var(--sun)}
+.trick p{margin:0;color:#dfe4f0}
+.related{margin-top:26px}
+
+.qbox{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.qprog{height:6px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:18px}
+.qprog i{display:block;height:100%;background:var(--sun);transition:width .3s}
+.score{font-family:Fraunces,serif;font-size:3rem;font-weight:800}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.about-grid{grid-template-columns:1fr}}
+.ph{color:var(--muted);font-style:italic}
+.note{background:var(--sun-soft);border-radius:var(--r);padding:14px 16px;font-size:.92rem;margin-top:18px}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:.85rem}
+</style>
+<style>
+.search{width:100%;font:inherit;font-size:1rem;padding:13px 16px;border:1.5px solid var(--line);border-radius:12px;background:#fff;margin:14px 0 6px;color:var(--ink)}
+.search:focus{outline:none;border-color:var(--ink)}
+.cat{margin-top:26px}
+.cat h3{font-size:1.3rem;margin-bottom:2px}
+.cat .cd{color:var(--muted);font-size:.93rem;margin:0 0 12px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.stat{flex:1 1 140px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.stat b{display:block;font-family:Fraunces,serif;font-size:2rem;line-height:1.1}
+.stat span{color:var(--muted);font-size:.88rem;font-weight:600}
+.mist{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+@media (max-width:560px){.mist{grid-template-columns:1fr}}
+.mist div{border-radius:10px;padding:10px 14px;font-weight:600}
+.mist .w{background:var(--red-soft);color:var(--red)}
+.mist .r{background:var(--green-soft);color:var(--green)}
+.mist .y{grid-column:1/-1;color:var(--muted);font-size:.92rem;font-weight:500;padding:0 4px 8px}
+.pq{padding:14px 0;border-top:1px solid var(--line)}
+.pq:first-of-type{border-top:0;padding-top:0}
+.loadnote{color:var(--muted);font-size:.9rem;margin:-8px 0 16px}
+.errbox{background:var(--red-soft);color:var(--red);border-radius:var(--r);padding:18px 20px;margin-top:20px;font-weight:600}
+.video{position:relative;aspect-ratio:16/9;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#home"><span class="dot"></span><span id="brandName">Salin</span></a>
+    <nav class="links">
+      <a href="#home" data-v="home">Home</a>
+      <a href="#clips" data-v="clips">Clips</a>
+      <a href="#lessons" data-v="lessons">Lessons</a>
+      <a href="#quiz" data-v="quiz">Quiz</a>
+      <a href="#about" data-v="about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+
+<section class="view" id="v-home">
+  <div class="hero">
+    <span class="eyebrow">Filipino through real clips</span>
+    <h1 id="tagline"></h1>
+    <p class="lede" id="intro"></p>
+    <div class="btns">
+      <a class="btn" href="#clips">Browse clips</a>
+      <a class="btn alt" href="#lessons">See lessons</a>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step"><b>01</b><h3>Watch</h3><p>Play a short clip from a show or vlog.</p></div>
+    <div class="step"><b>02</b><h3>Read</h3><p>See the Filipino line and its English translation side by side.</p></div>
+    <div class="step"><b>03</b><h3>Learn</h3><p>Find out the grammar or word behind the line, and if it was used correctly.</p></div>
+    <div class="step"><b>04</b><h3>Practice</h3><p>Check yourself with a quick question after every clip.</p></div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <h2 class="sechead">What you'll learn</h2>
+  <div id="homeTopics"></div>
+</section>
+
+<section class="view" id="v-clips">
+  <h2>Clip library</h2>
+  <p class="lede" style="font-size:1rem">Tap a clip to see its translation and lesson. Filter by source or topic.</p>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="view" id="v-clip"><div id="clipBody"></div></section>
+
+<section class="view" id="v-lessons">
+  <span class="eyebrow">Lessons</span>
+  <h2>Grammar and vocabulary topics</h2>
+  <p class="lede" style="font-size:1rem">Each lesson explains the rule, shows common mistakes, and ends with practice questions.</p>
+  <input id="lsearch" class="search" type="search" placeholder="Search lessons (try: kaniya, kung, may, po)" autocomplete="off">
+  <div id="lessonTopics"></div>
+</section>
+
+<section class="view" id="v-lesson"><div id="lessonBody"></div></section>
+
+<section class="view" id="v-quiz">
+  <h2>Mixed quiz</h2>
+  <p class="lede" style="font-size:1rem">10 random questions each round. Pick a category or mix them all.</p>
+  <div class="filters" id="qfilters"></div>
+  <div class="qbox" id="qbox"></div>
+</section>
+
+<section class="view" id="v-about">
+  <span class="eyebrow">About the research</span>
+  <h2>Why we made <span class="sitename"></span></h2>
+  <p id="aboutText"></p>
+  <div class="about-grid" style="margin-top:20px">
+    <div class="panel" style="margin:0"><div class="lbl">Research title</div><p id="rTitle"></p></div>
+    <div class="panel" style="margin:0"><div class="lbl">Researchers</div><p id="rPeople"></p></div>
+    <div class="panel" style="margin:0"><div class="lbl">Method</div><p id="rMethod"></p></div>
+    <div class="panel" style="margin:0" id="surveyBox"><div class="lbl">Take our survey</div><p>Help our study by answering a short survey about learning Filipino.</p><a class="btn sm" id="surveyBtn" target="_blank" rel="noopener">Open the survey ↗</a></div>
+  </div>
+  <div class="note"><b>Fair use note.</b> All clips belong to their original creators and are embedded from YouTube, not re-uploaded. They are used only for educational and research purposes, with credit to each source.</div>
+</section>
+
+</main>
+
+<footer><div class="wrap"><span class="sitename"></span> · A student research project on learning Filipino through media · Clips © their original creators</div></footer>
+
+<script src="content.js" onerror="window.__noContent=true"></script>
+<script>
+(function(){
+const main=document.getElementById('main');
+if(typeof SITE==='undefined'||typeof CLIPS==='undefined'||typeof LESSONS==='undefined'){
+  main.innerHTML=window.__noContent
+    ? '<div class="errbox">⚠️ The website couldn\'t find content.js. If you\'re seeing this in a file preview, that\'s normal: index.html only works when content.js is uploaded next to it (for example, both files in the same GitHub repository). If both files are already uploaded, check that the file is named exactly content.js.</div>'
+    : '<div class="errbox">⚠️ Something in content.js has a typo, so the website can\'t load it. Check the part you last edited for a missing quote " or a missing comma , and try again. (Tip: GitHub keeps every old version under History, so you can always go back.)</div>';
+  return;
+}
+const EXTRA=(typeof EXTRA_QUIZ!=='undefined')?EXTRA_QUIZ:[];
+const CATS=(typeof CATEGORIES!=='undefined')?CATEGORIES:[["all","Lessons",""]];
+let ALL_CLIPS=CLIPS.slice();
+
+const COLORS={blue:["#1f3a8a","#e8edfb"],teal:["#0f766e","#ddf3ef"],purple:["#7c3aed","#efe7fd"],orange:["#b45309","#fdeedb"],pink:["#be185d","#fce7f1"],sky:["#0369a1","#e0f0fb"],green:["#4d7c0f","#ecf6dc"],red:["#c2362f","#fde8e6"]};
+const L=k=>LESSONS[k]||{name:k||"Other",color:"blue",intro:"",rules:[],tip:""};
+const tv=k=>{const c=COLORS[L(k).color]||COLORS.blue;return `--tc:${c[0]};--tbg:${c[1]}`;};
+const isYT=c=>String(c.source||'').toLowerCase().startsWith('you');
+const srcName=c=>isYT(c)?'YouTuber':'Reality show';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function hl(s){return esc(s).replace(/\[!([^\]]+)\]/g,'<span class="hl-bad">$1</span>').replace(/\[([^\]]+)\]/g,'<span class="hl">$1</span>');}
+function plain(s){return esc(s).replace(/\[!?([^\]]+)\]/g,'$1');}
+function toSec(t){if(!t)return 0;t=String(t).trim();if(/^\d+s?$/.test(t))return parseInt(t);return t.split(':').map(Number).reduce((a,b)=>a*60+(b||0),0);}
+function ytId(u){const m=String(u||'').match(/(?:v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/);return m?m[1]:'';}
+function ytEmbed(c){
+  const id=ytId(c.url); if(!id) return '';
+  const end=c.end?'&end='+toSec(c.end):'';
+  return `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}?start=${toSec(c.start)}${end}&rel=0" title="${plain(c.channel)}" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+}
+function thumb(c){
+  const id=ytId(c.url);
+  const bg=id?`background:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg) center/cover`:'';
+  return `<div class="thumb ${isYT(c)?'yt':''}" style="${bg}"><span class="stype">${srcName(c)}</span><div class="play"></div><small>${esc(c.start)}</small></div>`;
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ---------- Google Sheets clips ---------- */
+function parseCSV(text){
+  const rows=[];let row=[],f='',q=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(q){ if(ch==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=ch; }
+    else if(ch==='"') q=true;
+    else if(ch===','){row.push(f);f='';}
+    else if(ch==='\n'||ch==='\r'){ if(ch==='\r'&&text[i+1]==='\n')i++; row.push(f);rows.push(row);row=[];f=''; }
+    else f+=ch;
+  }
+  if(f!==''||row.length){row.push(f);rows.push(row);}
+  return rows;
+}
+function findTopic(v){
+  const n=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+  v=n(v); if(!v) return '';
+  for(const [k,l] of Object.entries(LESSONS)){ if(n(k)===v||n(l.name)===v) return k; }
+  for(const [k,l] of Object.entries(LESSONS)){ if(n(l.name).includes(v)||v.includes(n(l.name))) return k; }
+  return v;
+}
+function rowToClip(h,r,i){
+  const g=n=>{const j=h.indexOf(n);return j<0?'':String(r[j]||'').trim();};
+  if(!g('filipino')&&!g('url')) return null;
+  const corr=g('correct').toLowerCase();
+  const choices=g('choices').split('/').map(s=>s.trim()).filter(Boolean);
+  return {
+    id:'s'+(g('id')||String(i)).replace(/[^\w-]/g,''),
+    topic:findTopic(g('topic')), source:g('source')||'youtuber', channel:g('channel'),
+    url:g('url'), start:g('start'), end:g('end'),
+    filipino:g('filipino'), english:g('english'), literal:g('literal'),
+    correct:!(corr==='no'||corr==='false'||corr==='mali'), fix:g('fix'),
+    lessonTitle:g('lessontitle'), explanation:g('explanation'),
+    vocab:g('vocab').split(';').map(p=>p.split('=').map(s=>s.trim())).filter(p=>p[0]),
+    question:g('question'), choices, answer:g('answer'), answerWhy:g('answerwhy')
+  };
+}
+async function loadSheet(){
+  if(!SITE.clipsSheet) return;
+  const note=document.getElementById('loadnote');
+  try{
+    const res=await fetch(SITE.clipsSheet,{cache:'no-store'});
+    if(!res.ok) throw new Error(res.status);
+    const rows=parseCSV(await res.text()).filter(r=>r.some(x=>String(x).trim()));
+    const h=rows[0].map(x=>String(x).trim().toLowerCase().replace(/[^a-z]/g,''));
+    const extra=rows.slice(1).map((r,i)=>rowToClip(h,r,i+1)).filter(Boolean);
+    ALL_CLIPS=CLIPS.concat(extra);
+  }catch(e){ if(note) note.textContent='Some clips could not load from the Google Sheet. Check the link in content.js.'; }
+  rebuild(); route();
+}
+
+/* ---------- site text ---------- */
+document.title=SITE.name||'Salin';
+document.getElementById('brandName').textContent=SITE.name||'Salin';
+document.querySelectorAll('.sitename').forEach(e=>e.textContent=SITE.name||'Salin');
+document.getElementById('tagline').textContent=SITE.tagline||'';
+document.getElementById('intro').textContent=SITE.intro||'';
+document.getElementById('aboutText').textContent=SITE.aboutText||'';
+document.getElementById('rTitle').textContent=SITE.researchTitle||'';
+document.getElementById('rPeople').textContent=SITE.researchers||'';
+document.getElementById('rMethod').textContent=SITE.method||'';
+if(SITE.surveyLink){document.getElementById('surveyBtn').href=SITE.surveyLink;}else{document.getElementById('surveyBox').style.display='none';}
+document.getElementById('grid').insertAdjacentHTML('beforebegin','<p class="loadnote" id="loadnote"></p>');
+
+/* ---------- lesson cards ---------- */
+function topicCard(k){
+  const n=ALL_CLIPS.filter(c=>c.topic===k).length, p=(L(k).practice||[]).length;
+  const bits=[]; if(n) bits.push(`${n} clip${n!==1?'s':''}`); if(p) bits.push(`${p} practice`);
+  return `<a class="topic" style="${tv(k)}" href="#lesson-${k}"><div class="tw">${esc(L(k).name)}</div><p>${esc(L(k).intro||'')}</p><small>${bits.join(' · ')||'Open lesson'} →</small></a>`;
+}
+function lessonGroups(q){
+  q=String(q||'').trim().toLowerCase();
+  const match=k=>{ if(!q) return true; const l=L(k); return [k,l.name,l.intro,l.keywords||''].join(' ').toLowerCase().includes(q); };
+  let out='';
+  const used=new Set();
+  for(const [ck,cn,cd] of CATS){
+    const ks=Object.keys(LESSONS).filter(k=>(LESSONS[k].category||CATS[0][0])===ck&&match(k));
+    ks.forEach(k=>used.add(k));
+    if(ks.length) out+=`<div class="cat"><h3>${esc(cn)}</h3><p class="cd">${esc(cd)}</p><div class="topics">${ks.map(topicCard).join('')}</div></div>`;
+  }
+  const rest=Object.keys(LESSONS).filter(k=>!used.has(k)&&match(k));
+  if(rest.length) out+=`<div class="cat"><h3>More lessons</h3><div class="topics">${rest.map(topicCard).join('')}</div></div>`;
+  return out||'<p class="ph" style="margin-top:20px">No lessons match that search.</p>';
+}
+function cardHTML(c){
+  return `<a class="card" href="#${c.id}">${thumb(c)}
+    <div class="body">
+      <span class="tag" style="${tv(c.topic)}">${esc(L(c.topic).name)}</span>${c.correct===false?'<span class="tag bad">mistake</span>':''}
+      <div class="line">${plain(c.filipino)}</div>
+      <p class="tr">${esc(c.english)}</p>
+    </div></a>`;
+}
+function mcq(el,q){
+  const opts=(q.choices||[]).filter(Boolean);
+  el.innerHTML=`<div class="qs">${esc(q.question).replace('___','<span class="blank">?</span>')}</div>
+    <div class="opts">${opts.map(o=>`<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="fb"></div>`;
+  return new Promise(res=>{
+    const bs=el.querySelectorAll('.opt');
+    bs.forEach(b=>b.onclick=()=>{
+      bs.forEach(x=>{x.disabled=true;if(x.dataset.o===q.answer)x.classList.add('right');});
+      const ok=b.dataset.o===q.answer; if(!ok)b.classList.add('wrong');
+      el.querySelector('.fb').innerHTML=(ok?'<b style="color:var(--green)">Tama!</b> ':'<b style="color:var(--red)">Not quite.</b> ')+esc(q.answerWhy||'');
+      res(ok);
+    });
+  });
+}
+
+/* ---------- library ---------- */
+let filter='all';
+function renderLib(){
+  const F=[['all','All'],['show','Reality shows'],['yt','YouTubers'],['bad','Mistakes']].concat(Object.keys(LESSONS).filter(k=>ALL_CLIPS.some(c=>c.topic===k)).map(k=>[k,L(k).name]));
+  document.getElementById('filters').innerHTML=F.map(([k,l])=>`<button class="chip ${filter===k?'on':''}" data-f="${k}">${esc(l)}</button>`).join('');
+  const list=ALL_CLIPS.filter(c=>filter==='all'||(filter==='yt'&&isYT(c))||(filter==='show'&&!isYT(c))||c.topic===filter||(filter==='bad'&&c.correct===false));
+  document.getElementById('grid').innerHTML=list.map(cardHTML).join('')||'<p class="ph">No clips here yet.</p>';
+}
+document.getElementById('filters').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){filter=b.dataset.f;renderLib();}});
+
+/* ---------- clip page ---------- */
+function renderClip(id){
+  const i=ALL_CLIPS.findIndex(c=>c.id===id),c=ALL_CLIPS[i]; if(!c){location.hash='clips';return;}
+  const prev=ALL_CLIPS[i-1],next=ALL_CLIPS[i+1],t=L(c.topic);
+  const body=document.getElementById('clipBody'); body.setAttribute('style',tv(c.topic));
+  const vocab=(c.vocab||[]).filter(v=>v&&v[0]);
+  body.innerHTML=`<a class="back" href="#clips">← All clips</a>
+    <div class="player">${ytEmbed(c)||thumb(c)}</div>
+    <div class="player-meta"><span><b>${esc(c.channel||srcName(c))}</b>${c.start?' · '+esc(c.start)+(c.end?'–'+esc(c.end):''):''}</span>${c.url?`<a href="${esc(c.url)}" target="_blank" rel="noopener">Open on YouTube ↗</a>`:'<span class="ph">No video link yet</span>'}</div>
+    <div class="panel"><div class="lbl">Filipino</div><div class="tl">${hl(c.filipino)}</div></div>
+    <div class="panel"><div class="lbl">English translation</div><div class="en">${esc(c.english)}</div>${c.literal?`<div class="lit">Word for word: ${esc(c.literal)}</div>`:''}</div>
+    <div class="panel spot ${c.correct===false?'badb':''}">
+      <div class="lbl">Lesson · ${esc(t.name)}</div>
+      ${c.correct===false?`<span class="verdict no">✗ Should be "${esc(c.fix||'?')}"</span>`:'<span class="verdict ok">✓ Used correctly</span>'}
+      ${c.lessonTitle?`<h3>${esc(c.lessonTitle)}</h3>`:''}
+      <p style="margin:0">${esc(c.explanation)}</p>
+      ${LESSONS[c.topic]?`<p style="margin:10px 0 0;font-size:.9rem"><a href="#lesson-${c.topic}">Read the full ${esc(t.name)} lesson →</a></p>`:''}
+    </div>
+    ${vocab.length?`<div class="panel"><div class="lbl">Vocabulary</div><div class="vocab">${vocab.map(([w,m])=>`<div class="vw"><b>${esc(w)}</b><span>${esc(m||'')}</span></div>`).join('')}</div></div>`:''}
+    ${c.question&&c.answer?'<div class="panel"><div class="lbl">Mini check</div><div id="mini"></div></div>':''}
+    <div class="pager">
+      ${prev?`<a class="btn alt sm" href="#${prev.id}">← Previous</a>`:'<span></span>'}
+      ${next?`<a class="btn sm" href="#${next.id}">Next clip →</a>`:'<a class="btn sm" href="#quiz">Take the quiz →</a>'}
+    </div>`;
+  if(c.question&&c.answer) mcq(document.getElementById('mini'),c);
+}
+
+/* ---------- lesson page ---------- */
+function table(rows){
+  if(!rows||!rows.length) return '';
+  const [h,...r]=rows;
+  return `<div style="overflow-x:auto"><table class="tbl"><tr>${h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr>${r.map(row=>`<tr>${row.map((x,i)=>`<td>${i===0?'<b>'+esc(x)+'</b>':esc(x)}</td>`).join('')}</tr>`).join('')}</table></div>`;
+}
+function renderLesson(k){
+  if(!LESSONS[k]){location.hash='lessons';return;}
+  const t=L(k),body=document.getElementById('lessonBody'); body.setAttribute('style',tv(k));
+  const clips=ALL_CLIPS.filter(c=>c.topic===k);
+  const cat=CATS.find(c=>c[0]===t.category);
+  const keys=Object.keys(LESSONS), idx=keys.indexOf(k), nk=keys[idx+1], pk=keys[idx-1];
+  body.innerHTML=`<a class="back" href="#lessons">← All lessons</a>
+    <div class="lhead">${cat?`<div class="lbl" style="color:var(--tc)">${esc(cat[1])}</div>`:''}<h1>${esc(t.name)}</h1><p>${esc(t.intro||'')}</p></div>
+    ${(t.rules||[]).map(r=>`<div class="rule">${r.label?`<div class="num">${esc(r.label)}</div>`:''}${r.title?`<h3>${esc(r.title)}</h3>`:''}${r.text?`<p>${esc(r.text)}</p>`:''}
+      ${table(r.table)}
+      ${(r.examples||[]).map(([f,e])=>`<div class="ex"><div class="t">${hl(f)}</div><div class="e">${esc(e||'')}</div></div>`).join('')}</div>`).join('')}
+    ${(t.mistakes||[]).length?`<div class="rule"><div class="num">Watch out</div><h3>Common mistakes</h3>${t.mistakes.map(([w,r,y])=>`<div class="mist"><div class="w">✗ ${esc(w)}</div><div class="r">✓ ${esc(r)}</div>${y?`<div class="y">${esc(y)}</div>`:''}</div>`).join('')}</div>`:''}
+    ${t.tip?`<div class="trick"><h3>Tip</h3><p>${esc(t.tip)}</p></div>`:''}
+    ${(t.practice||[]).length?`<div class="rule" id="practice"><div class="num">Practice</div><h3>Try it yourself</h3>${t.practice.map((_,i)=>`<div class="pq" id="pq${i}"></div>`).join('')}</div>`:''}
+    <div class="related"><h2>See it in real clips</h2>${clips.length?`<div class="grid">${clips.map(cardHTML).join('')}</div>`:'<p class="ph">No clips for this lesson yet.</p>'}</div>
+    <div class="pager">${pk?`<a class="btn alt sm" href="#lesson-${pk}">← ${esc(L(pk).name)}</a>`:'<span></span>'}${nk?`<a class="btn sm" href="#lesson-${nk}">${esc(L(nk).name)} →</a>`:'<a class="btn sm" href="#quiz">Take the quiz →</a>'}</div>`;
+  (t.practice||[]).forEach((q,i)=>mcq(document.getElementById('pq'+i),q));
+}
+
+/* ---------- quiz ---------- */
+let qcat='all', round=[], qi=0, qs=0;
+function pool(){
+  const all=[];
+  ALL_CLIPS.filter(c=>c.question&&c.answer).forEach(c=>all.push({topic:c.topic,question:c.question,choices:c.choices,answer:c.answer,answerWhy:c.answerWhy}));
+  Object.entries(LESSONS).forEach(([k,l])=>(l.practice||[]).forEach(p=>all.push(Object.assign({topic:k},p))));
+  EXTRA.forEach(p=>all.push(p));
+  return all.filter(q=>qcat==='all'||(LESSONS[q.topic]&&LESSONS[q.topic].category===qcat));
+}
+function newRound(){round=shuffle(pool()).slice(0,10);qi=0;qs=0;renderQuiz();}
+function renderQFilters(){
+  const F=[['all','Mix everything']].concat(CATS.map(c=>[c[0],c[1]]));
+  document.getElementById('qfilters').innerHTML=F.map(([k,l])=>`<button class="chip ${qcat===k?'on':''}" data-q="${k}">${esc(l)}</button>`).join('');
+}
+document.getElementById('qfilters').addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(b){qcat=b.dataset.q;renderQFilters();newRound();}});
+function renderQuiz(){
+  const box=document.getElementById('qbox');
+  if(!round.length){box.innerHTML='<p class="ph">No quiz questions yet.</p>';return;}
+  if(qi>=round.length){
+    const pct=Math.round(qs/round.length*100);
+    box.innerHTML=`<div class="qprog"><i style="width:100%"></i></div><div class="lbl">Your score</div><div class="score">${qs}/${round.length}</div>
+      <p>${pct>=80?'Galing! You really know your Filipino.':pct>=50?'Good job! Review the lessons you missed and try again.':'Keep going! Check the lessons, then try again.'}</p>
+      <div class="btns"><button class="btn" id="again">New round</button><a class="btn alt" href="#lessons">Review lessons</a></div>`;
+    document.getElementById('again').onclick=newRound;return;
+  }
+  const it=round[qi];
+  box.innerHTML=`<div class="qprog"><i style="width:${qi/round.length*100}%"></i></div>
+    <a class="tag" style="${tv(it.topic)};text-decoration:none" href="#lesson-${it.topic}">${esc(L(it.topic).name)}</a>
+    <span style="color:var(--muted);font-size:.88rem;font-weight:600">Question ${qi+1} of ${round.length}</span>
+    <div id="qq"></div>
+    <div style="margin-top:14px"><button class="btn sm" id="qnext" style="visibility:hidden">${qi===round.length-1?'See score':'Next'} →</button></div>`;
+  mcq(document.getElementById('qq'),it).then(ok=>{if(ok)qs++;const n=document.getElementById('qnext');n.style.visibility='visible';n.onclick=()=>{qi++;renderQuiz();};});
+}
+
+/* ---------- home stats + rebuild ---------- */
+function rebuild(){
+  const nq=Object.values(LESSONS).reduce((a,l)=>a+(l.practice||[]).length,0)+ALL_CLIPS.filter(c=>c.question).length+EXTRA.length;
+  document.getElementById('stats').innerHTML=[[Object.keys(LESSONS).length,'lessons'],[ALL_CLIPS.length,'clips'],[nq,'practice questions']].map(([n,l])=>`<div class="stat"><b>${n}</b><span>${l}</span></div>`).join('');
+  document.getElementById('homeTopics').innerHTML=lessonGroups('');
+  document.getElementById('lessonTopics').innerHTML=lessonGroups(document.getElementById('lsearch').value);
+}
+document.getElementById('lsearch').addEventListener('input',e=>{document.getElementById('lessonTopics').innerHTML=lessonGroups(e.target.value);});
+
+/* ---------- router ---------- */
+function route(){
+  const h=decodeURIComponent((location.hash||'#home').slice(1));
+  let v=h;
+  if(ALL_CLIPS.some(c=>c.id===h)) v='clip';
+  else if(h.startsWith('lesson-')) v='lesson';
+  if(!['home','clips','clip','lessons','lesson','quiz','about'].includes(v)) v='home';
+  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
+  const nav={clip:'clips',lesson:'lessons'}[v]||v;
+  document.querySelectorAll('.links a').forEach(a=>a.classList.toggle('on',a.dataset.v===nav));
+  if(v==='clip') renderClip(h);
+  if(v==='lesson') renderLesson(h.slice(7));
+  if(v==='clips') renderLib();
+  window.scrollTo(0,0);
+}
+rebuild();
+window.addEventListener('hashchange',route);
+route(); renderQFilters(); newRound();
+loadSheet();
+})();
+</script>
+</body>
+</html>
