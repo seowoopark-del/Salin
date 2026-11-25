@@ -29,8 +29,8 @@ const SITE = {
   tagline: "Learn Filipino the way people actually speak it.",
   intro: "Watch short clips from Filipino reality shows and YouTubers, read the English translation, and learn the grammar and vocabulary behind every line.",
 
-  researchTitle: "[Your research title here]",
-  researchers: "[Group members, section, school]",
+  researchTitle: "[Ng or Nang? Common Grammar Difficulties in Filipino and How Media Clips Can Help Learners]",
+  researchers: "[Cale Dimaculangan, Nikka Academia, Seowoo Park, 11-Micah, GCFSMCS]",
   aboutText: "Many learners have trouble with Filipino vocabulary and grammar. This project tests whether real, everyday clips from Filipino media can make these lessons easier to understand than textbook examples alone.",
   method: "Clips are taken from Filipino reality shows and YouTube vlogs. Each line is transcribed, translated into English, and analyzed for the grammar and vocabulary it uses. Respondents' difficulties are gathered through a Google Forms survey.",
 
